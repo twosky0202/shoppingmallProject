@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 import os.path
 
 class Color(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(max_length=200, unique=True, allow_unicode=True)
 
     def __str__(self):
@@ -47,8 +47,14 @@ class Item(models.Model):
     created_at = models.DateField(auto_now_add=True)  # 제조년월
 
     manufacturer = models.ForeignKey(Manufacturer, null=True, on_delete=models.SET_NULL)  # 제조사
-    category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)  # 카테고리
-    color = models.ManyToManyField(Color)  # 색상
+    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)  # 카테고리
+    colors = models.ManyToManyField(Color, blank=True)  # 색상
+
+    def get_avatar_url(self):
+        if self.author.socialaccount_set.exists():
+           return self.author.socialaccount_set.first().get_avatar_url()
+        else:
+            return 'https://dummyimage.com/50x50/ced4da/6c757d.jpg'
 
     def __str__(self):
         return f'{self.name}'
