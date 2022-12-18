@@ -41,17 +41,17 @@ class Manufacturer(models.Model):
 
 class Item(models.Model):
     name = models.CharField(max_length=50)  # 상품명
-    content = models.TextField()  # 설명
-    image = models.ImageField(upload_to='shoppingmall/images/', blank=True)  # 이미지
+    content = models.TextField(blank=True)  # 설명
+    image = models.ImageField(upload_to='shoppingmall/images/')  # 이미지
     price = models.IntegerField()  # 가격
     created_at = models.DateField(auto_now_add=True)  # 제조년월
 
-    manufacturer = models.ForeignKey(Manufacturer, null=True, blank=True, on_delete=models.SET_NULL)  # 제조사
-    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)  # 카테고리
-    color = models.ManyToManyField(Color, blank=True)  # 색상
+    manufacturer = models.ForeignKey(Manufacturer, null=True, on_delete=models.SET_NULL)  # 제조사
+    category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)  # 카테고리
+    color = models.ManyToManyField(Color)  # 색상
 
     def __str__(self):
-        return f'[{self.manufacturer}] {self.name}'
+        return f'{self.name}'
 
     def get_absolute_url(self):
         return f'/shoppingmall/{self.pk}/'

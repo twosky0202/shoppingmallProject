@@ -1,0 +1,99 @@
+{% load socialaccount %}
+
+<!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+            <div class="container px-3">
+                <a class="navbar-brand" href="/">Shopping Mall</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/">HOME</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/shoppingmall">ALL</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/about_us">ABOUT US</a>
+                        </li>
+<!--                        <li class="nav-item dropdown">-->
+<!--                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>-->
+<!--                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">-->
+<!--                                <li><a class="dropdown-item" href="#!">All Products</a></li>-->
+<!--                                <li><hr class="dropdown-divider" /></li>-->
+<!--                                <li><a class="dropdown-item" href="#!">Popular Items</a></li>-->
+<!--                                <li><a class="dropdown-item" href="#!">New Arrivals</a></li>-->
+<!--                            </ul>-->
+<!--                        </li>-->
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/mypage" id="navbarDropdownMenuLink" role="button" aria-haspopup="true" aria-expanded="false">
+                            {% if user.socialaccount_set.all.0.get_avatar_url %} <!-- all.0 == first -->
+                            <img class="rounded-circle" src="{{user.socialaccount_set.all.0.get_avatar_url}}" width="25px"/>
+                            {% else %}
+                            <img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" width="25px"/>
+                            {% endif %}
+                            {{user.username}}'s MYPAGE
+                             </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/accounts/logout/">LOGOUT</a>
+                        </li>
+
+                        {% else %}
+                        <li class="nav-item">
+                          <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">LOGIN</a>
+                        </li>
+                        {% endif %}
+                      </ul>
+<!--                    <form class="d-flex">-->
+<!--                        <button class="btn btn-outline-dark" type="submit">-->
+<!--                            <i class="bi-cart-fill me-1"></i>-->
+<!--                            Cart-->
+<!--                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>-->
+<!--                        </button>-->
+<!--                    </form>-->
+                </div>
+            </div>
+        </nav>
+
+<!-- Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel"><i class="fa-solid fa-right-to-bracket"></i> LogIn</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-6">
+                <a role="button" class="btn btn-outline-dark btn-block btn-sm"
+                  href="{% provider_login_url 'google' %}">
+                  <i class="fa-brands fa-google"></i> LogIn with Google
+                </a>
+                <a role="button" class="btn btn-outline-dark btn-block btn-sm"
+                  href="/accounts/login/">
+                  <i class="fa-regular fa-envelope"></i> LogIn with Email
+                </a>
+              </div>
+              <div class="col-6">
+                <a role="button" class="btn btn-outline-dark btn-block btn-sm"
+                  href="/accounts/signup/">
+                  <i class="fa-regular fa-envelope"></i> SignUp with Email
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
