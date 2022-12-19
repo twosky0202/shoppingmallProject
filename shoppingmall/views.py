@@ -10,6 +10,14 @@ from django.db.models import Q
 # from rest_framework import viewsets
 # from .serializers import postSerializer
 
+def delete_item(request,pk):
+    item = get_object_or_404(Item, pk=pk)
+    if request.user.is_authenticated and request.user.is_superuser:
+        item.delete()
+        return redirect('/shoppingmall/')
+    else:
+        PermissionDenied
+
 def delete_comment(request,pk):
     comment = get_object_or_404(Comment, pk=pk)
     item = comment.item

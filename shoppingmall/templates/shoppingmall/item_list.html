@@ -9,7 +9,8 @@
         {% endif %}
 {% endif %}
 <h3>{% if search_info %}<small class="text-muted">{{search_info}}</small>{% endif %}</h3>
-<h3>{% if category %}<span class="badge badge-secondary" >{{ category }}</span>{% endif %}</h3>
+<h3>{% if category %}<span class="badge badge-secondary" >{{ category }}</span>
+    {% endif %}</h3>
 <h3>{% if manufacturer %}<span class="badge badge-light" style="background:#dae0e5">{{ manufacturer }}</span>{% endif %}</h3>
 <h3>{% if color %}<span class="badge badge-light" ><i class="fas fa-tag"></i> {{ color }} ({{color.item_set.count}})</span>{% endif %}</h3>
         <!-- Section-->

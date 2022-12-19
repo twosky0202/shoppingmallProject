@@ -10,8 +10,36 @@
                         <a class="btn btn-info float-right" href="/shoppingmall/update_item/{{item.pk}}/" role="button">
                             <i class="fas fa-pen"> Edit Item</i>
                         </a>
+                        <a role="button" class="btn btn-danger float-right"
+                               data-toggle="modal" data-target="#deleteModal2-{{item.pk}}"
+                               href="/shoppingmall/delete_item/{{item.pk}}/">
+                                Delete
+                            </a>
                         {% endif %}
                     {% endif %}
+
+                        <div class="modal fade" id="deleteModal2-{{item.pk}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel2">Are you sure?</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <del>{{item.name | linebreaks}}</del>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <a role="button" class="btn btn-secondary"
+                                      href="/shoppingmall/delete_item/{{item.pk}}">
+                                      Delete
+                                    </a>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
 <div id="post-area">
     <section>
             <div class="container px-4 px-lg-5 my-5">
