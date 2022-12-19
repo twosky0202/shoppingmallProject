@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from markdownx.models import MarkdownxField
+from markdownx.utils import markdown
 import os.path
 
 class Color(models.Model):
@@ -41,7 +43,7 @@ class Manufacturer(models.Model):
 
 class Item(models.Model):
     name = models.CharField(max_length=50)  # 상품명
-    content = models.TextField(blank=True)  # 설명
+    content = MarkdownxField()  # 설명
     image = models.ImageField(upload_to='shoppingmall/images/')  # 이미지
     price = models.IntegerField()  # 가격
     created_at = models.DateField(auto_now_add=True)  # 제조년월
@@ -49,6 +51,7 @@ class Item(models.Model):
     manufacturer = models.ForeignKey(Manufacturer, null=True, on_delete=models.SET_NULL)  # 제조사
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)  # 카테고리
     colors = models.ManyToManyField(Color, blank=True)  # 색상
+
 
     def get_avatar_url(self):
         if self.author.socialaccount_set.exists():
@@ -61,6 +64,9 @@ class Item(models.Model):
 
     def get_absolute_url(self):
         return f'/shoppingmall/{self.pk}/'
+
+    def get_content_markdown(self):
+        return markdown(self.content)
 
 class Comment(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)

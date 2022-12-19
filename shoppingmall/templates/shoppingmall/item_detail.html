@@ -13,7 +13,7 @@
                         {% endif %}
                     {% endif %}
 <div id="post-area">
-        <section class="py-5">
+    <section>
             <div class="container px-4 px-lg-5 my-5">
                 <div class="row gx-4 gx-lg-5 align-items-center">
 <!--                    <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" alt="..." /></div>-->
@@ -40,7 +40,7 @@
                             <span class="text-decoration-line-through">{{ item.price }}원</span>
 <!--                            <span>$40.00</span>-->
                         </div>
-                        <p class="lead">{{ item.content }}</p>
+
                         <div class="d-flex">
                             <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" />
                             {% if item.colors.exists %}
@@ -61,7 +61,8 @@
                 </div>
             </div>
         </section>
-        </div>
+    <p class="lead">{{ item.get_content_markdown | safe }}</p>
+</div>
 
     <div id="comment-area" class="mb-5"> <!--댓글 영역-->
         <div class="card bg-light">
