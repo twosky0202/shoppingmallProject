@@ -46,7 +46,7 @@ class Item(models.Model):
     content = MarkdownxField()  # 설명
     image = models.ImageField(upload_to='shoppingmall/images/')  # 이미지
     price = models.IntegerField()  # 가격
-    created_at = models.DateField(auto_now_add=True)  # 제조년월
+    created_at = models.DateField(auto_now_add=False, null=True, blank=True)  # 제조년월
 
     manufacturer = models.ForeignKey(Manufacturer, null=True, on_delete=models.SET_NULL)  # 제조사
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)  # 카테고리
