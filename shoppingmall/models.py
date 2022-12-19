@@ -57,7 +57,7 @@ class Item(models.Model):
         if self.author.socialaccount_set.exists():
            return self.author.socialaccount_set.first().get_avatar_url()
         else:
-            return 'https://dummyimage.com/50x50/ced4da/6c757d.jpg'
+            return f'https://doitdjango.com/avatar/id/1399/b76ae05ef96b24c0/svg/{self.author.email}'
 
     def __str__(self):
         return f'{self.name}'
@@ -85,4 +85,4 @@ class Comment(models.Model):
         if self.author.socialaccount_set.exists():
            return self.author.socialaccount_set.first().get_avatar_url()
         else:
-            return 'https://dummyimage.com/50x50/ced4da/6c757d.jpg'
+            return f'https://doitdjango.com/avatar/id/1399/b76ae05ef96b24c0/svg/{self.author.email}'

@@ -18,7 +18,7 @@
                     {% if user.socialaccount_set.all.0.get_avatar_url %}
                     <img class="rounded-circle" src="{{user.socialaccount_set.all.0.get_avatar_url}}" width="150px"/>
                     {% else %}
-                    <img class="rounded-circle" src="https://dummyimage.com/150x150/ced4da/6c757d.jpg" width="150px"/>
+                    <img class="rounded-circle" src="https://doitdjango.com/avatar/id/1399/b76ae05ef96b24c0/svg/{{user.email}}" width="150px"/>
                     {% endif %}
                     <h4 class="display-4" style="font-weight:500;font-size:2.5rem">{{user.username}}</h4>
                     <p class="lead fw-normal mb-0">{{user.email}}</p>
