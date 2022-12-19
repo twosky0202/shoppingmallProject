@@ -45,16 +45,16 @@
                             <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" />
                             {% if item.colors.exists %}
                             <form>
-                                <select id="color" style="height:100%">
+                                <select id="color" style="height:100%;width:100px">
                                     {% for c in item.colors.all %}
                                     <option value="{{c}}">{{c}}</option>
                                     {% endfor %}
                                 </select>
                             </form>
                             {% endif %}
-                            <button class="btn btn-outline-dark flex-shrink-0" type="button">
+                            <button class="btn btn-outline-dark flex-shrink-0 float-right" type="button" style="width:100px;margin-left: auto;">
                                 <i class="bi-cart-fill me-1"></i>
-                                Add to cart
+                                BUY
                             </button>
                         </div>
                     </div>

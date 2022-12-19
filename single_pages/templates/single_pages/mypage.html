@@ -27,22 +27,30 @@
         </header>
     <div class="container mt-4 pt-5 mb-3">
         <h1>COMMENT</h1>
-        <div class="row my-5" style="margin-left:0">
+        <div class="row my-5" style="margin-left:0;flex-direction: column;">
             {% if user.comment_set.exists %}
                     {% for comment in user.comment_set.all %}
-                        <a class="text-decoration-none text-dark" href="/shoppingmall/{{comment.item.pk}}">
+                    <div class="card">
+                        <a class="text-decoration-none text-dark card-body" href="/shoppingmall/{{comment.item.pk}}">
                             <h5>{{comment.item}}</h5>
                             <div class="d-flex" id="comment-{{comment.pk}}">
                                 <div class="flex-shrink-0">
                                     <img class="rounded-circle" src="{{ comment.get_avatar_url }}" alt="{{ comment.user }}" width="60px" />
                                 </div>
-                                <div class="ms-3 ml-3">
+                                <div class="ms-3 ml-3" style="width:100%">
                                     <div class="fw-bold">{{comment.author.username}} &nbsp;&nbsp;&nbsp;
                                         <small class="text-muted">{{comment.created_at}}</small></div>
-                                    <p class="mt-2">{{ comment.content | truncatechars:20 }}</p>
+                                    <p class="mt-2">{{ comment.content}}</p>
+                                    {% if comment.created_at != comment.modified_at %}
+                                        <p class="text-muted float-right">
+                                            <small>Updated : {{comment.modified_at}}</small>
+                                        </p>
+                                    {% endif %}
                                 </div>
+
                             </div>
                         </a>
+                    </div>
                     <hr>
                     {% endfor %}
                 {% else %}

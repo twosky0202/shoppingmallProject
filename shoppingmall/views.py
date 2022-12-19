@@ -158,6 +158,7 @@ class CommentUpdate(LoginRequiredMixin, UpdateView):
             raise PermissionDenied
 
 def manufacturer_page(request, slug):
+
     manufacturer = Manufacturer.objects.get(slug=slug)
     item_list = Item.objects.filter(manufacturer=manufacturer)
 
@@ -170,6 +171,7 @@ def manufacturer_page(request, slug):
     })
 
 def category_page(request, slug):
+
     if slug == 'no_category' :
         category = '기타'
         item_list = Item.objects.filter(category=None)
