@@ -11,7 +11,45 @@
     </head>
 <body>
     {% include 'shoppingmall/navbar.html' %}
-
+        <header class="py-5 bg-dark">
+            <div class="container my-5">
+                <h1 class="text-white">MYPAGE</h1>
+                <div class="text-center text-white">
+                    {% if user.socialaccount_set.all.0.get_avatar_url %}
+                    <img class="rounded-circle" src="{{user.socialaccount_set.all.0.get_avatar_url}}" width="150px"/>
+                    {% else %}
+                    <img class="rounded-circle" src="https://dummyimage.com/150x150/ced4da/6c757d.jpg" width="150px"/>
+                    {% endif %}
+                    <h4 class="display-4" style="font-weight:500;font-size:2.5rem">{{user.username}}</h4>
+                    <p class="lead fw-normal mb-0">{{user.email}}</p>
+                </div>
+            </div>
+        </header>
+    <div class="container mt-4 pt-5 mb-3">
+        <h1>COMMENT</h1>
+        <div class="row my-5" style="margin-left:0">
+            {% if user.comment_set.exists %}
+                    {% for comment in user.comment_set.all %}
+                        <a class="text-decoration-none text-dark" href="/shoppingmall/{{comment.item.pk}}">
+                            <h5>{{comment.item}}</h5>
+                            <div class="d-flex" id="comment-{{comment.pk}}">
+                                <div class="flex-shrink-0">
+                                    <img class="rounded-circle" src="{{ comment.get_avatar_url }}" alt="{{ comment.user }}" width="60px" />
+                                </div>
+                                <div class="ms-3 ml-3">
+                                    <div class="fw-bold">{{comment.author.username}} &nbsp;&nbsp;&nbsp;
+                                        <small class="text-muted">{{comment.created_at}}</small></div>
+                                    <p class="mt-2">{{ comment.content | truncatechars:20 }}</p>
+                                </div>
+                            </div>
+                        </a>
+                    <hr>
+                    {% endfor %}
+                {% else %}
+                <h4>게시한 댓글이 없습니다.</h4>
+                {% endif %}
+        </div>
+    </div>
     {% include 'shoppingmall/footer.html' %}
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

@@ -12,14 +12,75 @@
 <body>
     {% include 'shoppingmall/navbar.html' %}
 <!-- Header-->
-        <header class="bg-dark py-5">
-            <div class="container px-4 px-lg-5 my-5">
-                <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">Shop in style</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
-                </div>
+        <header class="py-5">
+            <div class="container"> <!-- px-4 px-lg-5 my-5-->
+<!--                <div class="text-center text-white">-->
+<!--                    <h1 class="display-4 fw-bolder">Shop in style</h1>-->
+<!--                    <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>-->
+<!--                </div>-->
+                <img src="{% static 'single_pages/images/banner.png' %}" style="width:100%;height:100%">
             </div>
+<!--            <img src="{% static 'single_pages/images/home.jpg' %}">-->
         </header>
+    <section class="py-5">
+                <div class="container">
+                    <h2>NEW</h2>
+                    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3">
+
+                        {% for i in recent_items %}
+                        <div class="col mb-5" id="item-{{i.pk}}">
+                            <div class="card h-100">
+                                <a class="text-decoration-none text-dark" href="{{ i.get_absolute_url }}">
+                                <!-- Product image-->
+                                    {% if i.image %}
+                                    <img class="card-img-top" src="{{ i.image.url }}" alt="{{i}}의 head_image" />
+                                    {% else %}
+                                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                                    {% endif %}
+                                </a>
+                                    <!-- Product details-->
+                                    <div class="card-body p-4">
+                                        <div class="text-left">
+                                            <!-- Product name-->
+                                            <a href="{{ i.manufacturer.get_absolute_url }}" class="badge badge-light" style="background:#dae0e5">{{ i.manufacturer }}</a>
+                                            {% if i.category %}
+                                            <a href="{{ i.category.get_absolute_url }}">
+                                                <span class="badge badge-secondary">{{ i.category }}</span>
+                                            </a>
+                                            {% else %}
+                                            <a href="/shoppingmall/category/no_category">
+                                                <span class="badge badge-secondary">기타</span>
+                                            </a>
+                                            {% endif %}
+                                            <a class="text-decoration-none text-dark" href="{{ i.get_absolute_url }}">
+                                                <h6 class="fw-bolder">{{ i.name }}</h6>
+                                            </a>
+                                                {% if i.colors.exists %}
+                                                    <i class="fas fa-tag"></i>
+                                                    {% for c in i.colors.iterator %}
+                                                    <span class="badge badge-pill badge-light">
+                                                        <a href="{{c.get_absolute_url}}" class="text-decoration-none text-dark">
+                                                            {{c}}
+                                                        </a>
+                                                    </span>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            <!-- Product price-->
+                                            <div>{{ i.price }}원</div>
+                                        </div>
+                                    </div>
+                                    <!-- Product actions-->
+    <!--                                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">-->
+    <!--                                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{i.get_absolute_url}}">View options</a></div>-->
+    <!--                                </div>-->
+
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+
     {% include 'shoppingmall/footer.html' %}
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Item, Manufacturer, Category, Color
+from .models import Item, Manufacturer, Category, Color, Comment
 
 admin.site.register(Item)
 
@@ -14,3 +14,5 @@ admin.site.register(Category, CategoryAdmin)
 class ColorAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug' : ('name',)}
 admin.site.register(Color, ColorAdmin)
+
+admin.site.register(Comment)

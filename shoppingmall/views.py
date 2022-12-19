@@ -1,14 +1,23 @@
 from django.shortcuts import render, redirect
-from .models import Item, Manufacturer, Category, Color
+from .models import Item, Manufacturer, Category, Color, Comment
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from django.utils.text import slugify
-# from .forms import CommentForm
+from .forms import CommentForm
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 # from rest_framework import viewsets
 # from .serializers import postSerializer
+
+def delete_comment(request,pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    item = comment.item
+    if request.user.is_authenticated and request.user == comment.author:
+        comment.delete()
+        return redirect(item.get_absolute_url())
+    else:
+        PermissionDenied
 
 class ItemUpdate(LoginRequiredMixin,UpdateView):
     model = Item
@@ -49,8 +58,9 @@ class ItemUpdate(LoginRequiredMixin,UpdateView):
             for c in self.object.colors.all():
                 color_str_list.append(c.name)
             context['color_str_default'] = ';'.join(color_str_list)
-        context['categories'] = Category.objects.all() #모든 카테고리를 가져옴
-        context['no_category_post_count'] = Item.objects.filter(category=None).count #카테고리가 지정되지 않은 포스트의 개수를 세라
+        context['categories'] = Category.objects.all()
+        context['no_category_item_count'] = Item.objects.filter(category=None).count
+        context['manufacturers'] = Manufacturer.objects.all()
         return context
 
 class ItemCreate(LoginRequiredMixin,UserPassesTestMixin,CreateView):
@@ -81,8 +91,10 @@ class ItemCreate(LoginRequiredMixin,UserPassesTestMixin,CreateView):
         else:
             return redirect('/shoppingmall/')
 
+
 class ItemList(ListView):
     model = Item
+    ordering = '-pk'
     paginate_by = 9
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -115,7 +127,35 @@ class ItemDetail(DetailView):
         context['manufacturers'] = Manufacturer.objects.all()
         context['categories'] = Category.objects.all()
         context['no_category_item_count'] = Item.objects.filter(category=None).count
+        context['comment_form'] = CommentForm
         return context
+
+def new_comment(request, pk):
+    if request.user.is_authenticated:
+        item = get_object_or_404(Item, pk=pk)
+        if request.method == 'POST':
+            comment_form = CommentForm(request.POST)
+            if comment_form.is_valid():
+                comment = comment_form.save(commit=False)
+                comment.item = item
+                comment.author = request.user
+                comment.save()
+
+                return redirect(comment.get_absolute_url())
+        else: # GET
+            return redirect(item.get_absolute_url())
+    else: # 로그인 안한 사용자
+        raise PermissionDenied
+
+class CommentUpdate(LoginRequiredMixin, UpdateView):
+    model = Comment
+    form_class = CommentForm
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.user == self.get_object().author:
+            return super(CommentUpdate,self).dispatch(request, *args, **kwargs)
+        else:
+            raise PermissionDenied
 
 def manufacturer_page(request, slug):
     manufacturer = Manufacturer.objects.get(slug=slug)
